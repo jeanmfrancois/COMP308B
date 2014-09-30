@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="warn" strict="true" name="DefaultXMLConfig">
+	<Properties>
+		<Property name="filename-root">../logs/tme2-logging.log</Property>
+		<Property name="filename-program1">../logs/tme2-generics.log</Property>
+		<Property name="filename-program2">../logs/tme2-processors.log</Property>
+		<Property name="console-pattern">%d{HH:mm:ss.SSS} %-5level [%t]%M [%L]:%msg%n</Property>
+		<Property name="file-pattern">%d{yyyy:HH:mm:ss.SSS} %-5level [%t]%M [%L]:%msg%n</Property>
+	</Properties>
+	<Appenders>
+		<Appender type="Console" name="console">
+			<Layout type="PatternLayout" pattern="${console-pattern}" />
+		</Appender>
+		<Appender type="File" name="file-root" fileName="${filename-root}">
+			<Layout type="PatternLayout" pattern="${file-pattern}"/>
+		</Appender>
+		<Appender type="File" name="file-program1" fileName="${filename-program1}">
+			<Layout type="PatternLayout" pattern="${file-pattern}"/>
+		</Appender>
+		<Appender type="File" name="file-program2" fileName="${filename-program2}">
+			<Layout type="PatternLayout" pattern="${file-pattern}"/>
+		</Appender>
+	</Appenders>
+	<Loggers>
+		<Logger name="com.jfbuilds.tme2.program1.GenericsTests" level="debug">
+			<AppenderRef ref="file-program1" />
+		</Logger>
+		<Logger name="com.jfbuilds.tme2.program2.ProcessorsTests" level="debug">
+			<AppenderRef ref="file-program2" />
+		</Logger>
+		<Root level="warn">
+		    <AppenderRef ref="file-root" />
+			<AppenderRef ref="console" />
+		</Root>
+	</Loggers>
+</Configuration>

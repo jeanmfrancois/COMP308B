@@ -1,0 +1,16 @@
+TME 2 Objective Questions
+
+Unit 4
+Q:
+How does a method in a derived class affect a method in a base class with the same name but a different signature? 
+
+A:
+A method which overloads (having a method in a base class with the same name but different signatures) does not hide the base class implementation as in C++ but instead offers a new implementation.
+
+
+Unit 5
+Q:
+How is a parameterized array created?
+
+A:
+You cannot instantiate arrays of parameterized types, erasure removes the parameter type information, and arrays must know the exact type that they hold, in order to enforce type safety. However, you can create a reference to such an array of the non-generified type, afterwards using a cast when adding to the array.
