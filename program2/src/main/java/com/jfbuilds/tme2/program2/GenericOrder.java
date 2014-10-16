@@ -7,7 +7,7 @@
  * Assignment: TME 2<br>
  * Created: Sep 30, 2014
  */
-package com.jfbuilds.tme2.program1;
+package com.jfbuilds.tme2.program2;
 
 import java.util.AbstractList;
 import java.util.ArrayList;
