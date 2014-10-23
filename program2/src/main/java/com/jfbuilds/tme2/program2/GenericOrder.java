@@ -49,7 +49,6 @@ public class GenericOrder<T extends Product> extends AbstractList<T> {
 	 * 
 	 */
 	public GenericOrder() {
-		type = getClass();
 		elements = new ArrayList<>();
 		count += 1;
 		id = "Gen-Ord" + count;
