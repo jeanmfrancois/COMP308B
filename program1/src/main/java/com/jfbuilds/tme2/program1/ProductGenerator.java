@@ -64,9 +64,14 @@ public class ProductGenerator<T extends Product> implements Generator<T> {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		ProductGenerator gen = new ProductGenerator(new ComputerPart());
-		ArrayList<Product> cp = createComputerOrderArray(40);
-		System.out.println("Created Array = " + Arrays.deepToString(cp.toArray()));
+		// ProductGenerator gen = new ProductGenerator(new ComputerPart());
+		// ArrayList<Product> cp = createComputerOrderArray(40);
+		// System.out.println("Created Array = " +
+		// Arrays.deepToString(cp.toArray()));
+		System.out.println("Computer Order = " + Arrays.deepToString(createComputerOrderArray(10).toArray()));
+		System.out.println("Party Order = " + Arrays.deepToString(createPartyOrderArray(10).toArray()));
+		System.out
+				.println("Computer Party Order = " + Arrays.deepToString(createComputerPartyOrderArray(10).toArray()));
 	}
 
 	/**
@@ -102,22 +107,59 @@ public class ProductGenerator<T extends Product> implements Generator<T> {
 	}
 
 	public static ArrayList<Product> createComputerOrderArray(int size) {
+		// ArrayList<Product> list = new ArrayList<>();
+		// try {
+		// List<Class<? extends Product>> baseClassOptions = new ArrayList<>();
+		// //
+		// System.out.println(Arrays.deepToString(ProductGenerator.getSubtypes(ComputerPart.class).toArray()));
+		// baseClassOptions.addAll(ProductGenerator.getSubtypes(ComputerPart.class));
+		// baseClassOptions.addAll(ProductGenerator.getSubtypes(Peripheral.class));
+		// baseClassOptions.addAll(ProductGenerator.getSubtypes(Service.class));
+		// //
+		// System.out.println(Arrays.deepToString(baseClassOptions.toArray()));
+		// int randomItemNum;
+		// for (int i = 0; i < size; i++) {
+		// randomItemNum = (int) Math.floor(Math.random() *
+		// (baseClassOptions.size()));
+		// list.add(baseClassOptions.get(randomItemNum).newInstance());
+		// }
+		// } catch (Exception e) {
+		// e.printStackTrace();
+		// }
+		return createOrderArray(size, ComputerPart.class, Peripheral.class, Service.class);
+	}
+
+	public static ArrayList<Product> createPartyOrderArray(int size) {
+		return createOrderArray(size, Fruit.class, Cheese.class, Service.class);
+	}
+
+	public static ArrayList<Product> createComputerPartyOrderArray(int size) {
+		return createOrderArray(size, ComputerPart.class, Peripheral.class, Service.class, Fruit.class, Cheese.class);
+	}
+
+	/**
+	 * @param size
+	 * @param baseClasses
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public static ArrayList<Product> createOrderArray(int size, Class... baseClasses) {
+		int randomItemNum;
 		ArrayList<Product> list = new ArrayList<>();
 		try {
 			List<Class<? extends Product>> baseClassOptions = new ArrayList<>();
-			// System.out.println(Arrays.deepToString(ProductGenerator.getSubtypes(ComputerPart.class).toArray()));
-			baseClassOptions.addAll(ProductGenerator.getSubtypes(ComputerPart.class));
-			baseClassOptions.addAll(ProductGenerator.getSubtypes(Peripheral.class));
-			baseClassOptions.addAll(ProductGenerator.getSubtypes(Service.class));
-			// System.out.println(Arrays.deepToString(baseClassOptions.toArray()));
-			int randomItemNum;
+			for (int i = 0; i < baseClasses.length; i++) {
+				baseClassOptions.addAll(ProductGenerator.getSubtypes(baseClasses[i]));
+			}
 			for (int i = 0; i < size; i++) {
 				randomItemNum = (int) Math.floor(Math.random() * (baseClassOptions.size()));
 				list.add(baseClassOptions.get(randomItemNum).newInstance());
 			}
-		} catch (Exception e) {
+		} catch (InstantiationException | IllegalAccessException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		// System.out.println(Arrays.deepToString(baseClasses));
 		return list;
 	}
 
