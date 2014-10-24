@@ -109,10 +109,7 @@ public class GenericOrder<T extends Product> extends AbstractList<T> {
 		System.out.println("Creating a generic");
 		GenericOrder<Product> products = new GenericOrder<Product>();
 		System.out.println("Add an elements");
-		products.add(new Motherboard());
-		products.add(Motherboard.generate());
-		// products.addAll(ProductGenerator.createOrder(40,
-		// ComputerPart.class));
+		products.addAll(ProductGenerator.createComputerPartyOrder(80));
 		System.out.println("Print items:");
 		System.out.println(products.toString());
 	}

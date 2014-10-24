@@ -18,7 +18,7 @@ class Product {
 
 	final static String[] OMITTED_FIELDS = { "rootClass", "count" };
 
-	protected static int count = 0;
+	protected static int count = 1;
 
 	protected float price;
 
@@ -26,25 +26,20 @@ class Product {
 
 	private Class<? extends Product> rootClass = Product.class;
 
-	// return the price of a particular product
 	float price() {
 		return price;
 	}
 
-	protected Product() {
-		this(4.0F);
-	}
-
-	protected Product(float p) {
-		price = p;
-		orderNumber = 100000 + count++;
-	}
-
 	public static Product generate() {
-		System.out.println("Creating..");
-		return new Product(1.01F);
+		try {
+			throw new UnsupportedOperationException();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
+	// TODO clean code
 	@Override
 	public String toString() {
 		Class c = this.getClass();
@@ -78,6 +73,7 @@ class Product {
 		return className + output;
 	}
 
+	// TODO clean code
 	public String getFieldValues(Class c, ArrayList<String> fCollection) {
 		Field[] fields = c.getDeclaredFields();
 		fields = Products.omitFinalFields(fields);
@@ -114,32 +110,28 @@ class Product {
 	}
 }
 
-// ------------------------------------------------------------
 class ComputerPart extends Product {
 
-	public ComputerPart() {
-		super(6.3F);
-	}
-
-	public ComputerPart(float p) {
-		price = p;
-	}
-
-	@Override
-	public float price() {
-		return price;
+	public static ComputerPart generate() {
+		try {
+			throw new UnsupportedOperationException();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }
 
 class Motherboard extends ComputerPart {
 
-	final static float MAX_PRICE = 5.00F;
+	final static float MAX_PRICE = 75.00F;
 
-	final static float MIN_PRICE = 1.00F;
+	final static float MIN_PRICE = 50.00F;
 
-	final static float DEFAULT_PRICE = 3.00F;
+	final static float DEFAULT_PRICE = 65.00F;
 
-	final static String[] MANUFACTURES = { "Asus", "Gigabyte", "MSI", "Intel", "Asrock" };
+	final static String[] MANUFACTURES = { "Asus", "Gigabyte", "MSI", "Intel", "ASRock", "Chaintech", "DFI", "EPoX",
+			"IBM", "LiteOn", "PNY", "Gumstix" };
 
 	final static String DEFAULT_MANUFACTURE = MANUFACTURES[3];
 
@@ -149,9 +141,10 @@ class Motherboard extends ComputerPart {
 		this(DEFAULT_MANUFACTURE, DEFAULT_PRICE);
 	}
 
-	public Motherboard(String mfg, float p) {
-		super(p);
-		manufacturer = mfg;
+	public Motherboard(String manufacture, float price) {
+		this.price = price;
+		this.manufacturer = manufacture;
+		this.orderNumber = count++;
 	}
 
 	public static Motherboard generate() {
@@ -168,51 +161,87 @@ class Motherboard extends ComputerPart {
 
 class RAM extends ComputerPart {
 
+	final static float MAX_PRICE = 120.00F;
+
+	final static float MIN_PRICE = 30.00F;
+
+	final static String[] MANUFACTURES = { "Asus", "Chaintech", "HP", "IBM", "Kingston Technology", "Lenovo", "PNY",
+			"Samsung Electronics", "Sony", "Toshiba" };
+
+	final static int[] SIZES = { 1, 2, 4, 8, 16 };
+
+	final static float DEFAULT_PRICE = 60.00F;
+
+	final static String DEFAULT_MANUFACTURE = MANUFACTURES[2];
+
+	final static int DEFAULT_SIZE = SIZES[2];
+
 	protected int size;
 
 	protected String manufacturer;
 
 	public RAM() {
-		super(5.78F);
-		size = 2;
-		manufacturer = "HP";
+		this(DEFAULT_MANUFACTURE, DEFAULT_SIZE, DEFAULT_PRICE);
 	}
 
-	public RAM(String mfg, int size, float p) {
-		super(p);
-		this.manufacturer = mfg;
+	public RAM(String manufacture, int size, float price) {
+		this.price = price;
+		this.manufacturer = manufacture;
 		this.size = size;
+		this.orderNumber = count++;
 	}
 
 	public static RAM generate() {
-		return new RAM();
+		return new RAM(MANUFACTURES[new Random().nextInt(MANUFACTURES.length)],
+				SIZES[new Random().nextInt(SIZES.length)], (float) (Math.random() * (MAX_PRICE - MIN_PRICE))
+						+ MIN_PRICE);
 	}
 
 	public String getManufacturer() {
 		return manufacturer;
 	}
+
+	public int getSize() {
+		return size;
+	}
 }
 
 class Drive extends ComputerPart {
+
+	final static float MAX_PRICE = 220.00F;
+
+	final static float MIN_PRICE = 60.00F;
+
+	final static String[] TYPES = { "Parallel Advanced Technology Attachment", "Serial ATA",
+			"Small Computer System Interface", "Solid State Drive" };
+
+	final static int[] SPEEDS = { 10, 800, 100, 6000 };
+
+	final static float DEFAULT_PRICE = 90.00F;
+
+	final static String DEFAULT_TYPE = TYPES[3];
+
+	final static int DEFAULT_SPEED = SPEEDS[3];
 
 	protected String type;
 
 	protected int speed;
 
 	public Drive() {
-		super(10.5F);
-		this.type = "SSD";
-		this.speed = 600;
+		this(DEFAULT_TYPE, DEFAULT_SPEED, DEFAULT_PRICE);
 	}
 
-	public Drive(String type, int speed, float p) {
-		super(p);
+	public Drive(String type, int speed, float price) {
+		this.price = price;
 		this.type = type;
 		this.speed = speed;
+		this.orderNumber = count++;
 	}
 
 	public static Drive generate() {
-		return new Drive();
+		int randomInt = (new Random().nextInt(TYPES.length));
+		return new Drive(TYPES[randomInt], SPEEDS[randomInt], (float) (Math.random() * (MAX_PRICE - MIN_PRICE))
+				+ MIN_PRICE);
 	}
 
 	public String getType() {
@@ -226,32 +255,44 @@ class Drive extends ComputerPart {
 
 class Peripheral extends Product {
 
-	public Peripheral() {
-		super(3.6F);
-	}
-
-	public Peripheral(float p) {
-		price = p;
-	}
-
-	@Override
-	public float price() {
-		return price;
+	public static Peripheral generate() {
+		try {
+			throw new UnsupportedOperationException();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }
 
 class Printer extends Peripheral {
 
+	final static float MAX_PRICE = 80.00F;
+
+	final static float MIN_PRICE = 40.00F;
+
+	final static String[] MODELS = { "HP", "Epson", "Canon", "Lexmark", "Oki Data", "Xerox", "Citizen", "Panasonic",
+			"Samsung", "Apple" };
+
+	final static float DEFAULT_PRICE = 65.00F;
+
+	final static String DEFAULT_MODEL = MODELS[0];
+
 	protected String model;
 
 	public Printer() {
-		super(5.29F);
-		this.model = "Epson";
+		this(DEFAULT_MODEL, DEFAULT_PRICE);
 	}
 
-	public Printer(String model, float p) {
-		super(p);
+	public Printer(String model, float price) {
+		this.price = price;
 		this.model = model;
+		this.orderNumber = count++;
+	}
+
+	public static Printer generate() {
+		return new Printer(MODELS[new Random().nextInt(MODELS.length)],
+				(float) (Math.random() * (MAX_PRICE - MIN_PRICE)) + MIN_PRICE);
 	}
 
 	public String getModel() {
@@ -261,16 +302,32 @@ class Printer extends Peripheral {
 
 class Monitor extends Peripheral {
 
+	final static float MAX_PRICE = 260.00F;
+
+	final static float MIN_PRICE = 100.00F;
+
+	final static String[] MODELS = { "3M", "Acer Inc.", "AG Neovo", "AOC Monitors", "Apple", "Asus", "BenQ", "Compaq",
+			"Dell", "HP", "Gateway" };
+
+	final static float DEFAULT_PRICE = 120.00F;
+
+	final static String DEFAULT_MODEL = MODELS[9];
+
 	protected String model;
 
 	public Monitor() {
-		super(1.89F);
-		this.model = "Acer";
+		this(DEFAULT_MODEL, DEFAULT_PRICE);
 	}
 
-	public Monitor(String model, float p) {
-		super(p);
+	public Monitor(String model, float price) {
+		this.price = price;
 		this.model = model;
+		this.orderNumber = count++;
+	}
+
+	public static Monitor generate() {
+		return new Monitor(MODELS[new Random().nextInt(MODELS.length)],
+				(float) (Math.random() * (MAX_PRICE - MIN_PRICE)) + MIN_PRICE);
 	}
 
 	public String getModel() {
@@ -280,32 +337,44 @@ class Monitor extends Peripheral {
 
 class Service extends Product {
 
-	public Service() {
-		super(19.99F);
-	}
-
-	public Service(float p) {
-		price = p;
-	}
-
-	@Override
-	public float price() {
-		return price;
+	public static Service generate() {
+		try {
+			throw new UnsupportedOperationException();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }
 
 class AssemblyService extends Service {
 
-	String provider;
+	final static float MAX_PRICE = 180.00F;
+
+	final static float MIN_PRICE = 60.00F;
+
+	final static String[] PROVIDERS = { "Toshiba", "IBM", "Acer", "Fujitsu", "Apple", "Lenovo", "Alienware", "Sony",
+			"Dell", "NEC", "HP", "Gateway", "Compaq" };
+
+	final static float DEFAULT_PRICE = 95.00F;
+
+	final static String DEFAULT_PROVIDER = PROVIDERS[10];
+
+	protected String provider;
 
 	public AssemblyService() {
-		super(92.24F);
-		provider = "Geek Squad";
+		this(DEFAULT_PROVIDER, DEFAULT_PRICE);
 	}
 
-	public AssemblyService(String pv, float p) {
-		super(p);
-		provider = pv;
+	public AssemblyService(String provider, float price) {
+		this.price = price;
+		this.provider = provider;
+		this.orderNumber = count++;
+	}
+
+	public static AssemblyService generate() {
+		return new AssemblyService(PROVIDERS[new Random().nextInt(PROVIDERS.length)],
+				(float) (Math.random() * (MAX_PRICE - MIN_PRICE)) + MIN_PRICE);
 	}
 
 	public String getProvider() {
@@ -315,16 +384,31 @@ class AssemblyService extends Service {
 
 class DeliveryService extends Service {
 
+	final static float MAX_PRICE = 115.00F;
+
+	final static float MIN_PRICE = 45.00F;
+
+	final static String[] COURIERS = { "UPS", "FedEx", "Purolator", "Canada Post", "DHL" };
+
+	final static float DEFAULT_PRICE = 75.00F;
+
+	final static String DEFAULT_COURIER = COURIERS[3];
+
 	String courier;
 
 	public DeliveryService() {
-		super(12.78F);
-		courier = "UPS";
+		this(DEFAULT_COURIER, DEFAULT_PRICE);
 	}
 
-	public DeliveryService(String c, float p) {
-		super(p);
-		courier = c;
+	public DeliveryService(String courier, float price) {
+		this.price = price;
+		this.courier = courier;
+		this.orderNumber = count++;
+	}
+
+	public static DeliveryService generate() {
+		return new DeliveryService(COURIERS[new Random().nextInt(COURIERS.length)],
+				(float) (Math.random() * (MAX_PRICE - MIN_PRICE)) + MIN_PRICE);
 	}
 
 	public String getCourier() {
@@ -335,77 +419,113 @@ class DeliveryService extends Service {
 // -------------------------------------------------------
 class Cheese extends Product {
 
-	public Cheese() {
-		super(2.43F);
-	}
-
-	public Cheese(float p) {
-		price = p;
-	}
-
-	@Override
-	public float price() {
-		return price;
+	public static Cheese generate() {
+		try {
+			throw new UnsupportedOperationException();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }
 
 class Cheddar extends Cheese {
 
+	final static float MAX_PRICE = 7.25F;
+
+	final static float MIN_PRICE = 2.25F;
+
+	final static float DEFAULT_PRICE = 3.75F;
+
 	public Cheddar() {
-		super(1.14F);
+		this(DEFAULT_PRICE);
 	}
 
-	public Cheddar(float p) {
-		super(p);
+	public Cheddar(float price) {
+		this.price = price;
+		this.orderNumber = count++;
+	}
+
+	public static Cheddar generate() {
+		return new Cheddar((float) (Math.random() * (MAX_PRICE - MIN_PRICE)) + MIN_PRICE);
 	}
 }
 
 class Mozzarella extends Cheese {
 
+	final static float MAX_PRICE = 8.00F;
+
+	final static float MIN_PRICE = 3.00F;
+
+	final static float DEFAULT_PRICE = 4.50F;
+
 	public Mozzarella() {
-		super(8.24F);
+		this(DEFAULT_PRICE);
 	}
 
-	public Mozzarella(float p) {
-		super(p);
+	public Mozzarella(float price) {
+		this.price = price;
+		this.orderNumber = count++;
+	}
+
+	public static Mozzarella generate() {
+		return new Mozzarella((float) (Math.random() * (MAX_PRICE - MIN_PRICE)) + MIN_PRICE);
 	}
 }
 
 class Fruit extends Product {
 
-	public Fruit() {
-		super(4.38F);
-	}
-
-	public Fruit(float p) {
-		price = p;
-	}
-
-	@Override
-	public float price() {
-		return price;
+	public static Fruit generate() {
+		try {
+			throw new UnsupportedOperationException();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }
 
 class Apple extends Fruit {
 
+	final static float MAX_PRICE = 2.50F;
+
+	final static float MIN_PRICE = .50F;
+
+	final static float DEFAULT_PRICE = 0.95F;
+
 	public Apple() {
-		super(2.08F);
+		this(DEFAULT_PRICE);
 	}
 
-	public Apple(float p) {
-		super(p);
+	public Apple(float price) {
+		this.price = price;
+		this.orderNumber = count++;
+	}
+
+	public static Apple generate() {
+		return new Apple((float) (Math.random() * (MAX_PRICE - MIN_PRICE)) + MIN_PRICE);
 	}
 }
 
 class Orange extends Fruit {
 
+	final static float MAX_PRICE = 3.50F;
+
+	final static float MIN_PRICE = .70F;
+
+	final static float DEFAULT_PRICE = 1.05F;
+
 	public Orange() {
-		super(1.02F);
+		this(DEFAULT_PRICE);
 	}
 
-	public Orange(float p) {
-		super(p);
+	public Orange(float price) {
+		this.price = price;
+		this.orderNumber = count++;
+	}
+
+	public static Orange generate() {
+		return new Orange((float) (Math.random() * (MAX_PRICE - MIN_PRICE)) + MIN_PRICE);
 	}
 }
 
@@ -438,6 +558,11 @@ public class Products {
 		return feildsArray.toArray(newFields);
 	}
 
+	/**
+	 * @param fields
+	 * @param fieldNames
+	 * @return
+	 */
 	public static Field[] omitSpecialFields(Field[] fields, String[] fieldNames) {
 		ArrayList<Field> feildsArray = new ArrayList<>();
 		Field[] newFields;
@@ -454,14 +579,25 @@ public class Products {
 		return feildsArray.toArray(newFields);
 	}
 
+	/**
+	 * @return
+	 */
 	public static Product randomProduct() {
 		return ProductGenerator.randomProduct(Product.class);
 	}
 
+	/**
+	 * @param size
+	 * @return
+	 */
 	public static Product[] createArray(int size) {
 		return ((Product[]) ProductGenerator.createOrder(size, Product.class).toArray());
 	}
 
+	/**
+	 * @param size
+	 * @return
+	 */
 	public static ArrayList<Product> createList(int size) {
 		return ProductGenerator.createOrder(size, Product.class);
 	}
