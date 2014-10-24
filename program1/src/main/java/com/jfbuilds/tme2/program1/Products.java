@@ -1,16 +1,22 @@
 package com.jfbuilds.tme2.program1;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Random;
 
 /******************************************************************
  * COMP308 Java for Programmer, SCIS, Athabasca University Assignment: TME2
  * 
  * @author: Steve Leung
+ * @param <T>
  * @date : Oct 21, 2005
  ******************************************************************/
-abstract class Product {
+class Product {
+
+	final static String[] OMITTED_FIELDS = { "rootClass", "count" };
 
 	protected static int count = 0;
 
@@ -21,7 +27,9 @@ abstract class Product {
 	private Class<? extends Product> rootClass = Product.class;
 
 	// return the price of a particular product
-	abstract float price();
+	float price() {
+		return price;
+	}
 
 	protected Product() {
 		this(4.0F);
@@ -30,6 +38,11 @@ abstract class Product {
 	protected Product(float p) {
 		price = p;
 		orderNumber = 100000 + count++;
+	}
+
+	public static Product generate() {
+		System.out.println("Creating..");
+		return new Product(1.01F);
 	}
 
 	@Override
@@ -44,11 +57,7 @@ abstract class Product {
 		try {
 			// check to make sure it is a subclass of root class
 			if (rootClass.isAssignableFrom(this.getClass())) {
-				// System.out.println("Item  " + c.getSimpleName() +
-				// " is a candidate of the subclass:"
-				// + rootClass.getSimpleName());
 				while (rootClass.isAssignableFrom(curClass)) {
-					// System.out.println("setting some fields " + curClass);
 					fieldValues += getFieldValues(curClass, fCollection);
 					curClass = curClass.getSuperclass();
 				}
@@ -71,27 +80,28 @@ abstract class Product {
 
 	public String getFieldValues(Class c, ArrayList<String> fCollection) {
 		Field[] fields = c.getDeclaredFields();
+		fields = Products.omitFinalFields(fields);
+		fields = Products.omitSpecialFields(fields, OMITTED_FIELDS);
+		DecimalFormat formatter = new DecimalFormat("$0.00");
 		String fieldValues = "";
 		try {
 			for (Field f : fields) {
 				// f.setAccessible(true);
-				if (f.getName() != "rootClass" && f.getName() != "count") {
-					String fieldInput = "";
-					if (f.getName() == "orderNumber") {
-						fieldInput += "order number";
-						fieldInput += "=";
-						fieldInput += f.get(this);
-					} else if (f.getName() == "price") {
-						fieldInput += "price";
-						fieldInput += "=";
-						fieldInput += "$" + f.get(this);
-					} else {
-						fieldInput += f.getName();
-						fieldInput += "=";
-						fieldInput += f.get(this);
-					}
-					fCollection.add(fieldInput);
+				String fieldInput = "";
+				if (f.getName() == "orderNumber") {
+					fieldInput += "order number";
+					fieldInput += "=";
+					fieldInput += f.get(this);
+				} else if (f.getName() == "price") {
+					fieldInput += "price";
+					fieldInput += "=";
+					fieldInput += formatter.format(f.get(this));
+				} else {
+					fieldInput += f.getName();
+					fieldInput += "=";
+					fieldInput += f.get(this);
 				}
+				fCollection.add(fieldInput);
 			}
 		} catch (IllegalArgumentException e) {
 			// TODO Auto-generated catch block
@@ -123,16 +133,32 @@ class ComputerPart extends Product {
 
 class Motherboard extends ComputerPart {
 
+	final static float MAX_PRICE = 5.00F;
+
+	final static float MIN_PRICE = 1.00F;
+
+	final static float DEFAULT_PRICE = 3.00F;
+
+	final static String[] MANUFACTURES = { "Asus", "Gigabyte", "MSI", "Intel", "Asrock" };
+
+	final static String DEFAULT_MANUFACTURE = MANUFACTURES[3];
+
 	protected String manufacturer;
 
 	public Motherboard() {
-		super(2.8F);
-		manufacturer = "HP";
+		this(DEFAULT_MANUFACTURE, DEFAULT_PRICE);
 	}
 
 	public Motherboard(String mfg, float p) {
 		super(p);
 		manufacturer = mfg;
+	}
+
+	public static Motherboard generate() {
+		Motherboard product =
+				new Motherboard(MANUFACTURES[new Random().nextInt(MANUFACTURES.length)],
+						(float) (Math.random() * (MAX_PRICE - MIN_PRICE)) + MIN_PRICE);
+		return product;
 	}
 
 	public String getManufacturer() {
@@ -158,6 +184,10 @@ class RAM extends ComputerPart {
 		this.size = size;
 	}
 
+	public static RAM generate() {
+		return new RAM();
+	}
+
 	public String getManufacturer() {
 		return manufacturer;
 	}
@@ -179,6 +209,10 @@ class Drive extends ComputerPart {
 		super(p);
 		this.type = type;
 		this.speed = speed;
+	}
+
+	public static Drive generate() {
+		return new Drive();
 	}
 
 	public String getType() {
@@ -375,19 +409,60 @@ class Orange extends Fruit {
 	}
 }
 
+/**
+ * Products (description of class)
+ * <p>
+ * (description of core fields)
+ * <p>
+ * (description of core methods)
+ * 
+ * @author Jean-francois Nepton
+ * @version %I%, %G%
+ * @since 1.0
+ */
 public class Products {
 
-	public static final ProductCreator creator = new LiteralProductCreator();
+	/**
+	 * @param fields
+	 * @return
+	 */
+	public static Field[] omitFinalFields(Field[] fields) {
+		ArrayList<Field> feildsArray = new ArrayList<>();
+		Field[] newFields;
+		for (Field f : fields) {
+			if (!Modifier.isFinal(f.getModifiers())) {
+				feildsArray.add(f);
+			}
+		}
+		newFields = new Field[feildsArray.size()];
+		return feildsArray.toArray(newFields);
+	}
+
+	public static Field[] omitSpecialFields(Field[] fields, String[] fieldNames) {
+		ArrayList<Field> feildsArray = new ArrayList<>();
+		Field[] newFields;
+		for (Field f : fields) {
+			boolean namePresent = false;
+			for (String name : fieldNames) {
+				if (f.getName().equals(name))
+					namePresent = true;
+			}
+			if (namePresent != true)
+				feildsArray.add(f);
+		}
+		newFields = new Field[feildsArray.size()];
+		return feildsArray.toArray(newFields);
+	}
 
 	public static Product randomProduct() {
-		return creator.randomProduct();
+		return ProductGenerator.randomProduct(Product.class);
 	}
 
 	public static Product[] createArray(int size) {
-		return creator.createArray(size);
+		return ((Product[]) ProductGenerator.createOrder(size, Product.class).toArray());
 	}
 
-	public static ArrayList<Product> arrayList(int size) {
-		return creator.arrayList(size);
+	public static ArrayList<Product> createList(int size) {
+		return ProductGenerator.createOrder(size, Product.class);
 	}
 }

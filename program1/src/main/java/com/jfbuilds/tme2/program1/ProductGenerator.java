@@ -24,25 +24,15 @@ import java.util.List;
  * @version %I%, %G%
  * @since 1.0
  */
-public class ProductGenerator<T extends Product> implements Generator<T> {
+public class ProductGenerator {
 
-	@SuppressWarnings("unchecked")
+	/**
+	 * 
+	 */
 	public static final List<Class<? extends Product>> allTypes = Collections.unmodifiableList(Arrays.asList(
 			Product.class, ComputerPart.class, Motherboard.class, RAM.class, Drive.class, Peripheral.class,
 			Printer.class, Monitor.class, Service.class, AssemblyService.class, DeliveryService.class, Cheese.class,
 			Cheddar.class, Mozzarella.class, Fruit.class, Apple.class, Orange.class));
-
-	private final List<Class<? extends Product>> types;
-
-	public Class type;
-
-	/**
-	 * @param type
-	 */
-	public ProductGenerator(T type) {
-		this.type = type.getClass();
-		types = getSubtypes(type.getClass());
-	}
 
 	/**
 	 * @param type
@@ -64,39 +54,22 @@ public class ProductGenerator<T extends Product> implements Generator<T> {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// ProductGenerator gen = new ProductGenerator(new ComputerPart());
-		// ArrayList<Product> cp = createComputerOrderArray(40);
-		// System.out.println("Created Array = " +
-		// Arrays.deepToString(cp.toArray()));
-		System.out.println("Computer Order = " + Arrays.deepToString(createComputerOrderArray(10).toArray()));
-		System.out.println("Party Order = " + Arrays.deepToString(createPartyOrderArray(10).toArray()));
-		System.out
-				.println("Computer Party Order = " + Arrays.deepToString(createComputerPartyOrderArray(10).toArray()));
-	}
-
-	/**
-	 * @see com.jfbuilds.tme2.program1.Generator#next()
-	 */
-	@Override
-	public T next() {
-		// TODO Auto-generated method stub
-		return null;
+		System.out.println("Computer Order = " + Arrays.deepToString(createComputerOrder(10).toArray()));
+		System.out.println("Party Order = " + Arrays.deepToString(createPartyOrder(10).toArray()));
+		System.out.println("Computer Party Order = " + Arrays.deepToString(createComputerPartyOrder(10).toArray()));
 	}
 
 	/**
 	 * @param productType
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	public static <T> T randomProduct(Class<T> productType) {
 		// try {
 		List<Class<? extends Product>> optionsArray;
 		try {
 			optionsArray = ProductGenerator.getSubtypes(productType.getClass());
 			int randomItemNum = (int) Math.ceil(Math.random() * (optionsArray.size() - 1));
-			// for (int i = 0; i < 20; i++) {
-			// System.out.println("RN:" + (int) Math.ceil(Math.random() *
-			// (optionsArray.size() - 1)));
-			// }
 			T randomItem = (T) optionsArray.get(randomItemNum).newInstance();
 			return randomItem;
 		} catch (InstantiationException | IllegalAccessException e1) {
@@ -106,44 +79,13 @@ public class ProductGenerator<T extends Product> implements Generator<T> {
 		return null;
 	}
 
-	public static ArrayList<Product> createComputerOrderArray(int size) {
-		// ArrayList<Product> list = new ArrayList<>();
-		// try {
-		// List<Class<? extends Product>> baseClassOptions = new ArrayList<>();
-		// //
-		// System.out.println(Arrays.deepToString(ProductGenerator.getSubtypes(ComputerPart.class).toArray()));
-		// baseClassOptions.addAll(ProductGenerator.getSubtypes(ComputerPart.class));
-		// baseClassOptions.addAll(ProductGenerator.getSubtypes(Peripheral.class));
-		// baseClassOptions.addAll(ProductGenerator.getSubtypes(Service.class));
-		// //
-		// System.out.println(Arrays.deepToString(baseClassOptions.toArray()));
-		// int randomItemNum;
-		// for (int i = 0; i < size; i++) {
-		// randomItemNum = (int) Math.floor(Math.random() *
-		// (baseClassOptions.size()));
-		// list.add(baseClassOptions.get(randomItemNum).newInstance());
-		// }
-		// } catch (Exception e) {
-		// e.printStackTrace();
-		// }
-		return createOrderArray(size, ComputerPart.class, Peripheral.class, Service.class);
-	}
-
-	public static ArrayList<Product> createPartyOrderArray(int size) {
-		return createOrderArray(size, Fruit.class, Cheese.class, Service.class);
-	}
-
-	public static ArrayList<Product> createComputerPartyOrderArray(int size) {
-		return createOrderArray(size, ComputerPart.class, Peripheral.class, Service.class, Fruit.class, Cheese.class);
-	}
-
 	/**
 	 * @param size
 	 * @param baseClasses
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public static ArrayList<Product> createOrderArray(int size, Class... baseClasses) {
+	public static ArrayList<Product> createOrder(int size, Class... baseClasses) {
 		int randomItemNum;
 		ArrayList<Product> list = new ArrayList<>();
 		try {
@@ -156,50 +98,32 @@ public class ProductGenerator<T extends Product> implements Generator<T> {
 				list.add(baseClassOptions.get(randomItemNum).newInstance());
 			}
 		} catch (InstantiationException | IllegalAccessException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		// System.out.println(Arrays.deepToString(baseClasses));
 		return list;
 	}
 
-	public static ArrayList<ComputerPart> ComputerParts(int size) {
-		ArrayList<ComputerPart> list = new ArrayList<>();
-		for (int i = 0; i < size; i++) {
-			list.add(randomProduct(ComputerPart.class));
-		}
-		return null;
+	/**
+	 * @param size
+	 * @return
+	 */
+	public static ArrayList<Product> createComputerOrder(int size) {
+		return createOrder(size, ComputerPart.class, Peripheral.class, Service.class);
 	}
 
-	public static ArrayList<Fruit> Fruits(int size) {
-		ArrayList<Fruit> list = new ArrayList<>();
-		for (int i = 0; i < size; i++) {
-			list.add(randomProduct(Fruit.class));
-		}
-		return null;
+	/**
+	 * @param size
+	 * @return
+	 */
+	public static ArrayList<Product> createPartyOrder(int size) {
+		return createOrder(size, Fruit.class, Cheese.class, Service.class);
 	}
 
-	public static ArrayList<Cheese> Cheeses(int size) {
-		ArrayList<Cheese> list = new ArrayList<>();
-		for (int i = 0; i < size; i++) {
-			list.add(randomProduct(Cheese.class));
-		}
-		return null;
-	}
-
-	public static ArrayList<Peripheral> Peripherals(int size) {
-		ArrayList<Peripheral> list = new ArrayList<>();
-		for (int i = 0; i < size; i++) {
-			list.add(randomProduct(Peripheral.class));
-		}
-		return null;
-	}
-
-	public static ArrayList<Service> Services(int size) {
-		ArrayList<Service> list = new ArrayList<>();
-		for (int i = 0; i < size; i++) {
-			list.add(randomProduct(Service.class));
-		}
-		return null;
+	/**
+	 * @param size
+	 * @return
+	 */
+	public static ArrayList<Product> createComputerPartyOrder(int size) {
+		return createOrder(size, ComputerPart.class, Peripheral.class, Service.class, Fruit.class, Cheese.class);
 	}
 }

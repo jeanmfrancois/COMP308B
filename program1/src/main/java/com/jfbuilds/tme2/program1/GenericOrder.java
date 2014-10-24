@@ -11,6 +11,7 @@ package com.jfbuilds.tme2.program1;
 
 import java.util.AbstractList;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A generic container that acts as a collection of an arbitrary number of
@@ -76,10 +77,9 @@ public class GenericOrder<T extends Product> extends AbstractList<T> {
 	 */
 	@Override
 	public String toString() {
-		Object[] items = elements.toArray();
 		String output = this.getClass().getSimpleName() + " - ID:" + id + "\n";
-		for (Object o : items) {
-			output += o.toString() + "\n";
+		for (Product p : elements) {
+			output += p.toString() + "\n";
 		}
 		return output;
 	}
@@ -94,15 +94,25 @@ public class GenericOrder<T extends Product> extends AbstractList<T> {
 	}
 
 	/**
+	 * @param e
+	 * @return
+	 */
+	public boolean addAll(List<T> e) {
+		elements.addAll(e);
+		return true;
+	}
+
+	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
 		System.out.println("Creating a generic");
 		GenericOrder<Product> products = new GenericOrder<Product>();
 		System.out.println("Add an elements");
-		products.add(new Apple());
 		products.add(new Motherboard());
-		products.add(new Monitor());
+		products.add(Motherboard.generate());
+		// products.addAll(ProductGenerator.createOrder(40,
+		// ComputerPart.class));
 		System.out.println("Print items:");
 		System.out.println(products.toString());
 	}
