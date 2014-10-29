@@ -41,6 +41,9 @@ public class PartyTrayOrder<T extends Product> extends GenericOrder<T> {
 		id = "Par-Ord" + count;
 	}
 
+	/**
+	 * @see com.jfbuilds.tme2.program1.GenericOrder#add(com.jfbuilds.tme2.program1.Product)
+	 */
 	@Override
 	public boolean add(T e) {
 		if (Fruit.class.isAssignableFrom(e.getClass())) {
@@ -56,11 +59,15 @@ public class PartyTrayOrder<T extends Product> extends GenericOrder<T> {
 			elements.add(e);
 			services.add((Service) e);
 		} else {
-			System.out.println("Item was not added due to not meeting container requirements");
+			System.out.println("Item " + e + ", of type " + e.getClass().getSimpleName()
+					+ ", was not added due to not meeting container requirements of PartyTrayOrder");
 		}
 		return true;
 	}
 
+	/**
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		PartyTrayOrder<Product> partyTray = new PartyTrayOrder<>();
 		partyTray.add(new Mozzarella());

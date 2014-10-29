@@ -11,7 +11,6 @@ package com.jfbuilds.tme2.program1;
 
 import java.util.AbstractList;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A generic container that acts as a collection of an arbitrary number of
@@ -44,14 +43,17 @@ public class GenericOrder<T extends Product> extends AbstractList<T> {
 	/**
 	 * 
 	 */
-	public Class type;
+	public GenericOrder() {
+		elements = new ArrayList<>();
+		count += 1;
+		id = "Gen-Ord" + count;
+	}
 
 	/**
 	 * 
 	 */
-	public GenericOrder() {
-		type = getClass();
-		elements = new ArrayList<>();
+	public GenericOrder(ArrayList<T> suppliedProducts) {
+		elements = suppliedProducts;
 		count += 1;
 		id = "Gen-Ord" + count;
 	}
@@ -97,7 +99,7 @@ public class GenericOrder<T extends Product> extends AbstractList<T> {
 	 * @param e
 	 * @return
 	 */
-	public boolean addAll(List<T> e) {
+	public boolean addAll(GenericOrder<T> e) {
 		elements.addAll(e);
 		return true;
 	}
@@ -106,11 +108,9 @@ public class GenericOrder<T extends Product> extends AbstractList<T> {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		System.out.println("Creating a generic");
-		GenericOrder<Product> products = new GenericOrder<Product>();
-		System.out.println("Add an elements");
-		products.addAll(ProductGenerator.createComputerPartyOrder(80));
+		System.out.println("Creating a generic ...");
+		GenericOrder<Product> products = new GenericOrder<Product>(ProductGenerator.createComputerPartyOrder(50));
 		System.out.println("Print items:");
-		System.out.println(products.toString());
+		System.out.println(products);
 	}
 }

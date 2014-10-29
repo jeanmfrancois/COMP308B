@@ -56,7 +56,8 @@ public class ComputerOrder<T extends Product> extends GenericOrder<T> {
 			elements.add(e);
 			services.add((Service) e);
 		} else {
-			System.out.println("Item was not added due to not meeting container requirements");
+			System.out.println("Item " + e + ", of type " + e.getClass().getSimpleName()
+					+ ", was not added due to not meeting container requirements of ComputerPartsOrder");
 		}
 		return true;
 	}

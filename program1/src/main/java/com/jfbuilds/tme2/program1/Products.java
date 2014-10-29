@@ -31,12 +31,12 @@ class Product {
 	}
 
 	public static Product generate() {
-		try {
-			throw new UnsupportedOperationException();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
+		// try {
+		// throw new UnsupportedOperationException();
+		// } catch (Exception e) {
+		// e.printStackTrace();
+		// }
+		return new Apple();
 	}
 
 	// TODO clean code
@@ -577,28 +577,5 @@ public class Products {
 		}
 		newFields = new Field[feildsArray.size()];
 		return feildsArray.toArray(newFields);
-	}
-
-	/**
-	 * @return
-	 */
-	public static Product randomProduct() {
-		return ProductGenerator.randomProduct(Product.class);
-	}
-
-	/**
-	 * @param size
-	 * @return
-	 */
-	public static Product[] createArray(int size) {
-		return ((Product[]) ProductGenerator.createOrder(size, Product.class).toArray());
-	}
-
-	/**
-	 * @param size
-	 * @return
-	 */
-	public static ArrayList<Product> createList(int size) {
-		return ProductGenerator.createOrder(size, Product.class);
 	}
 }

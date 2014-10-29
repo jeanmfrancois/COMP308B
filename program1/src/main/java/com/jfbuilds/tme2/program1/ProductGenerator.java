@@ -43,7 +43,6 @@ public class ProductGenerator {
 		List<Class<? extends Product>> subTypes = new ArrayList<>();
 		for (int i = 0; i < allTypes.size(); i++) {
 			if (classType.isAssignableFrom(allTypes.get(i))) {
-				// System.out.println("Instances: " + allTypes.get(i));
 				subTypes.add(allTypes.get(i));
 			}
 		}
@@ -60,47 +59,53 @@ public class ProductGenerator {
 	}
 
 	/**
-	 * @param productType
-	 * @return
-	 */
-	@SuppressWarnings("unchecked")
-	public static <T> T randomProduct(Class<T> productType) {
-		// try {
-		List<Class<? extends Product>> optionsArray;
-		try {
-			optionsArray = ProductGenerator.getSubtypes(productType.getClass());
-			int randomItemNum = (int) Math.ceil(Math.random() * (optionsArray.size() - 1));
-			T randomItem = (T) optionsArray.get(randomItemNum).newInstance();
-			return randomItem;
-		} catch (InstantiationException | IllegalAccessException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		return null;
-	}
-
-	/**
 	 * @param size
 	 * @param baseClasses
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "static-access" })
 	public static ArrayList<Product> createOrder(int size, Class... baseClasses) {
 		int randomItemNum;
 		ArrayList<Product> list = new ArrayList<>();
-		try {
-			List<Class<? extends Product>> baseClassOptions = new ArrayList<>();
-			for (int i = 0; i < baseClasses.length; i++) {
-				baseClassOptions.addAll(ProductGenerator.getSubtypes(baseClasses[i]));
-			}
-			for (int i = 0; i < size; i++) {
-				randomItemNum = (int) Math.floor(Math.random() * (baseClassOptions.size()));
-				list.add(baseClassOptions.get(randomItemNum).newInstance());
-			}
-		} catch (InstantiationException | IllegalAccessException e) {
-			e.printStackTrace();
+		List<Class<? extends Product>> baseClassOptions = new ArrayList<>();
+		for (int i = 0; i < baseClasses.length; i++) {
+			baseClassOptions.addAll(ProductGenerator.getSubtypes(baseClasses[i]));
+		}
+		for (int i = 0; i < size; i++) {
+			randomItemNum = (int) Math.floor(Math.random() * (baseClassOptions.size()));
+			addClassType(baseClassOptions.get(randomItemNum), list);
 		}
 		return list;
+	}
+
+	/**
+	 * @param productClass
+	 * @param list
+	 */
+	private static void addClassType(Class productClass, ArrayList<Product> list) {
+		if (productClass == Motherboard.class) {
+			list.add(Motherboard.generate());
+		} else if (productClass == RAM.class) {
+			list.add(RAM.generate());
+		} else if (productClass == Drive.class) {
+			list.add(Drive.generate());
+		} else if (productClass == Printer.class) {
+			list.add(Printer.generate());
+		} else if (productClass == Monitor.class) {
+			list.add(Monitor.generate());
+		} else if (productClass == AssemblyService.class) {
+			list.add(AssemblyService.generate());
+		} else if (productClass == DeliveryService.class) {
+			list.add(DeliveryService.generate());
+		} else if (productClass == Cheddar.class) {
+			list.add(Cheddar.generate());
+		} else if (productClass == Mozzarella.class) {
+			list.add(Mozzarella.generate());
+		} else if (productClass == Apple.class) {
+			list.add(Apple.generate());
+		} else if (productClass == Orange.class) {
+			list.add(Orange.generate());
+		}
 	}
 
 	/**

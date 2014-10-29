@@ -19,9 +19,9 @@ package com.jfbuilds.tme2.program1;
  * @version %I%, %G%
  * @since 1.0
  */
-public class OrderProcessor {
+public class OrderProcessor<T extends Product> {
 
-	GenericOrder<Product> elements;
+	GenericOrder<T> elements;
 
 	ComputerOrder<ComputerPart> compParts;
 
@@ -33,8 +33,23 @@ public class OrderProcessor {
 
 	ComputerOrder<Service> services;
 
+	/**
+	 * 
+	 */
 	public OrderProcessor() {
 		elements = new GenericOrder<>();
+		compParts = new ComputerOrder<>();
+		peripherals = new ComputerOrder<>();
+		cheeses = new PartyTrayOrder<>();
+		fruits = new PartyTrayOrder<>();
+		services = new ComputerOrder<>();
+	}
+
+	/**
+	 * 
+	 */
+	public OrderProcessor(GenericOrder<T> productCollection) {
+		elements = productCollection;// TODO passVar
 		compParts = new ComputerOrder<>();
 		peripherals = new ComputerOrder<>();
 		cheeses = new PartyTrayOrder<>();
@@ -47,27 +62,30 @@ public class OrderProcessor {
 	 */
 	public static void main(String[] args) {
 		// CREATE
-		OrderProcessor processor = new OrderProcessor();
-		ComputerOrder<Product> comp = new ComputerOrder<>();
-		comp.add(new Monitor());
-		comp.add(new Peripheral());
-		comp.add(new DeliveryService());
-		comp.add(new RAM());
-		comp.add(new Drive());
-		PartyTrayOrder<Fruit> fruits = new PartyTrayOrder<>();
-		fruits.add(new Apple());
-		fruits.add(new Orange());
-		ComputerOrder<Peripheral> peripherals = new ComputerOrder<>();
-		peripherals.add(new Printer());
-		peripherals.add(new Monitor());
+		GenericOrder<Product> testCollection = new GenericOrder<>(ProductGenerator.createComputerPartyOrder(1000));
+		OrderProcessor<Product> processor = new OrderProcessor<>();
+		// ComputerOrder<Product> comp = new ComputerOrder<>();
+		// comp.add(new Monitor());
+		// comp.add(new Peripheral());
+		// comp.add(new DeliveryService());
+		// comp.add(new RAM());
+		// comp.add(new Drive());
+		// PartyTrayOrder<Product> fruits = new PartyTrayOrder<>();
+		// fruits.add(new Apple());
+		// fruits.add(new Orange());
+		// ComputerOrder<Product> peripherals = new ComputerOrder<>();
+		// peripherals.add(new Printer());
+		// peripherals.add(new Monitor());
 		// ACCEPT
-		processor.accept(comp);
-		processor.accept(fruits);
-		processor.accept(peripherals);
-		System.out.println(processor.elements);
+		processor.accept(testCollection);
+		// processor.accept(comp);
+		// processor.accept(fruits);
+		// processor.accept(peripherals);
+		// System.out.println(processor.elements);
 		// PROCESS
 		processor.process();
 		// DISPATCH
+		System.out.println();
 		System.out.print("COMP: ");
 		processor.dispatchComputerParts();
 		System.out.print("PERI: ");
@@ -83,11 +101,14 @@ public class OrderProcessor {
 	/**
 	 * @param order
 	 */
-	public <T extends Product> void accept(GenericOrder<T> order) {
-		System.out.println("accept a generic order of type " + order.type);
+	public void accept(GenericOrder<T> order) {
+		System.out.println("accept a generic order");
 		elements.addAll(order);
 	}
 
+	/**
+	 * 
+	 */
 	public void process() {
 		for (Product p : elements) {
 			if (ComputerPart.class.isAssignableFrom(p.getClass())) {
