@@ -9,11 +9,15 @@
 package com.jfbuilds.tme2.program1;
 
 /**
- * OrderProcessor (description of class)
+ * OrderProcessor is used to process an Order of type GenericOrder or it's
+ * subclasses
  * <p>
- * (description of core fields)
+ * Contains fields for holding types GenericOrder of all elements, ComputerOrder
+ * of ComputerPart objects, ComputerOrder of Peripheral objects, and
+ * ComputerOrder of Service objects
  * <p>
- * (description of core methods)
+ * Methods for accepting elements, processing current elements, and dispatching
+ * the processed elements
  * 
  * @author Jean-francois Nepton
  * @version %I%, %G%
@@ -34,7 +38,7 @@ public class OrderProcessor<T extends Product> {
 	ComputerOrder<Service> services;
 
 	/**
-	 * 
+	 * Default constructor which only initializes containing collection fields
 	 */
 	public OrderProcessor() {
 		elements = new GenericOrder<>();
@@ -46,10 +50,14 @@ public class OrderProcessor<T extends Product> {
 	}
 
 	/**
+	 * Constructor which takes a GenericOrder of a specified type to be
+	 * processed instead of current elements if defined
 	 * 
+	 * @param productCollection
+	 *            to be used for processing
 	 */
 	public OrderProcessor(GenericOrder<T> productCollection) {
-		elements = productCollection;// TODO passVar
+		elements = productCollection;
 		compParts = new ComputerOrder<>();
 		peripherals = new ComputerOrder<>();
 		cheeses = new PartyTrayOrder<>();
@@ -58,48 +66,11 @@ public class OrderProcessor<T extends Product> {
 	}
 
 	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		// CREATE
-		GenericOrder<Product> testCollection = new GenericOrder<>(ProductGenerator.createComputerPartyOrder(1000));
-		OrderProcessor<Product> processor = new OrderProcessor<>();
-		// ComputerOrder<Product> comp = new ComputerOrder<>();
-		// comp.add(new Monitor());
-		// comp.add(new Peripheral());
-		// comp.add(new DeliveryService());
-		// comp.add(new RAM());
-		// comp.add(new Drive());
-		// PartyTrayOrder<Product> fruits = new PartyTrayOrder<>();
-		// fruits.add(new Apple());
-		// fruits.add(new Orange());
-		// ComputerOrder<Product> peripherals = new ComputerOrder<>();
-		// peripherals.add(new Printer());
-		// peripherals.add(new Monitor());
-		// ACCEPT
-		processor.accept(testCollection);
-		// processor.accept(comp);
-		// processor.accept(fruits);
-		// processor.accept(peripherals);
-		// System.out.println(processor.elements);
-		// PROCESS
-		processor.process();
-		// DISPATCH
-		System.out.println();
-		System.out.print("COMP: ");
-		processor.dispatchComputerParts();
-		System.out.print("PERI: ");
-		processor.dispatchPeripherals();
-		System.out.print("CHEE: ");
-		processor.dispatchCheeses();
-		System.out.print("FRUI: ");
-		processor.dispatchFruits();
-		System.out.print("SERV: ");
-		processor.dispatchServices();
-	}
-
-	/**
+	 * accepts a GenericOrder of specified type to be added to an internal
+	 * collection for future processing
+	 * 
 	 * @param order
+	 *            to be added to OrderProcessor
 	 */
 	public void accept(GenericOrder<T> order) {
 		System.out.println("accept a generic order");
@@ -107,7 +78,8 @@ public class OrderProcessor<T extends Product> {
 	}
 
 	/**
-	 * 
+	 * Process elements and sort them into corresponding containers of
+	 * ComputerPart, Peripheral, or Service collections
 	 */
 	public void process() {
 		for (Product p : elements) {
@@ -122,43 +94,80 @@ public class OrderProcessor<T extends Product> {
 			} else if (Service.class.isAssignableFrom(p.getClass())) {
 				services.add((Service) p);
 			} else {
-				System.out.println("There was an error processing elements, check OrderProcessor.process");
+				System.out.println("There was an error processing elements, check OrderProcessor.process [" + p + "]");
 			}
 		}
 	}
 
 	/**
-	 * 
+	 * Dispatch simulation of all objects of type ComputerPart
 	 */
 	public void dispatchComputerParts() {
-		System.out.println(compParts);
+		if (compParts.size() > 0) {
+			System.out.print("COMPUTER PARTS: ");
+			System.out.println(compParts);
+		}
 	}
 
 	/**
-	 * 
+	 * Dispatch simulation of all objects of type Peripherals
 	 */
 	public void dispatchPeripherals() {
-		System.out.println(peripherals);
+		if (peripherals.size() > 0) {
+			System.out.print("PERIPHERALS: ");
+			System.out.println(peripherals);
+		}
 	}
 
 	/**
-	 * 
+	 * Dispatch simulation of all objects of type Cheese
 	 */
 	public void dispatchCheeses() {
-		System.out.println(cheeses);
+		if (cheeses.size() > 0) {
+			System.out.print("CHEESES: ");
+			System.out.println(cheeses);
+		}
 	}
 
 	/**
-	 * 
+	 * Dispatch simulation of all objects of type Fruit
 	 */
 	public void dispatchFruits() {
-		System.out.println(fruits);
+		if (fruits.size() > 0) {
+			System.out.print("FRUITS: ");
+			System.out.println(fruits);
+		}
 	}
 
 	/**
-	 * 
+	 * Dispatch simulation of all objects of type Service
 	 */
 	public void dispatchServices() {
-		System.out.println(services);
+		if (services.size() > 0) {
+			System.out.print("SERVICES: ");
+			System.out.println(services);
+		}
+	}
+
+	/**
+	 * TODO TESTING CODE TO BE REMOVED
+	 * 
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		// CREATE
+		GenericOrder<Product> testCollection = new GenericOrder<>(ProductGenerator.createComputerPartyOrder(10));
+		OrderProcessor<Product> processor = new OrderProcessor<>();
+		// ACCEPT
+		processor.accept(testCollection);
+		// PROCESS
+		processor.process();
+		// DISPATCH
+		System.out.println();
+		processor.dispatchComputerParts();
+		processor.dispatchPeripherals();
+		processor.dispatchCheeses();
+		processor.dispatchFruits();
+		processor.dispatchServices();
 	}
 }

@@ -11,8 +11,8 @@ import java.util.Random;
  * COMP308 Java for Programmer, SCIS, Athabasca University Assignment: TME2
  * 
  * @author: Steve Leung
- * @param <T>
- * @date : Oct 21, 2005
+ * @date : Oct 21, 2005 Class is used with minor additional content by
+ *       Jean-francois Nepton
  ******************************************************************/
 class Product {
 
@@ -30,16 +30,6 @@ class Product {
 		return price;
 	}
 
-	public static Product generate() {
-		// try {
-		// throw new UnsupportedOperationException();
-		// } catch (Exception e) {
-		// e.printStackTrace();
-		// }
-		return new Apple();
-	}
-
-	// TODO clean code
 	@Override
 	public String toString() {
 		Class c = this.getClass();
@@ -73,7 +63,6 @@ class Product {
 		return className + output;
 	}
 
-	// TODO clean code
 	public String getFieldValues(Class c, ArrayList<String> fCollection) {
 		Field[] fields = c.getDeclaredFields();
 		fields = Products.omitFinalFields(fields);
@@ -530,11 +519,13 @@ class Orange extends Fruit {
 }
 
 /**
- * Products (description of class)
+ * Products in general to represent different Product types
  * <p>
- * (description of core fields)
  * <p>
- * (description of core methods)
+ * omitFinalFields is used to omit declared final fields when performing the
+ * toString method on a Product. omitSpecialFields is used to omit fields which
+ * are in collection in static constant OMITTED_FIELDS when performing the
+ * toString method on a Product.
  * 
  * @author Jean-francois Nepton
  * @version %I%, %G%
@@ -544,7 +535,8 @@ public class Products {
 
 	/**
 	 * @param fields
-	 * @return
+	 *            that will be checked for final modifier
+	 * @return array of fields that meet criteria of not being final
 	 */
 	public static Field[] omitFinalFields(Field[] fields) {
 		ArrayList<Field> feildsArray = new ArrayList<>();
@@ -560,8 +552,13 @@ public class Products {
 
 	/**
 	 * @param fields
+	 *            that will be checked for inclusion in a string collection
+	 *            fieldNames
 	 * @param fieldNames
-	 * @return
+	 *            String array such as OMMITED_FIELDS constant which are used to
+	 *            check for exclusion in returned list
+	 * @return array of fields that meet criteria of not being in String array
+	 *         fieldNames
 	 */
 	public static Field[] omitSpecialFields(Field[] fields, String[] fieldNames) {
 		ArrayList<Field> feildsArray = new ArrayList<>();

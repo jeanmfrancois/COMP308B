@@ -1,5 +1,5 @@
 /**
- * File Name: ComputerPartsOrder.java<br>
+ * File Name: PartyTrayOrder.java<br>
  * Jean-francois Nepton<br>
  * COMP 308 Java for Programmers<br>
  * Cordinator: Dr. Xiaokun Zhang<br>
@@ -11,15 +11,17 @@ package com.jfbuilds.tme2.program1;
 import java.util.ArrayList;
 
 /**
- * ComputerPartsOrder (description of class)
+ * A container that acts as a collection of an arbitrary number of objects of
+ * type Cheese, Fruit, and Service or their subclasses.
  * <p>
- * (description of core fields)
+ * Field id gives each item in the collection a unique number.
  * <p>
- * (description of core methods)
+ * Methods exist for common actions for a collection as well as an override of
+ * the toString method to offer a readable representation of the item in the
+ * collection.
  * 
  * @author Jean-francois Nepton
  * @version %I%, %G%
- * @param <T>
  * @since 1.0
  */
 public class PartyTrayOrder<T extends Product> extends GenericOrder<T> {
@@ -30,15 +32,12 @@ public class PartyTrayOrder<T extends Product> extends GenericOrder<T> {
 
 	ArrayList<Service> services;
 
-	/**
-	 * 
-	 */
 	public PartyTrayOrder() {
 		elements = new ArrayList<>();
 		fruits = new ArrayList<>();
 		cheeses = new ArrayList<>();
 		services = new ArrayList<>();
-		id = "Par-Ord" + count;
+		id = "Par-Ord-" + count;
 	}
 
 	/**
@@ -47,15 +46,12 @@ public class PartyTrayOrder<T extends Product> extends GenericOrder<T> {
 	@Override
 	public boolean add(T e) {
 		if (Fruit.class.isAssignableFrom(e.getClass())) {
-			// System.out.println("Adding fruit");
 			elements.add(e);
 			fruits.add((Fruit) e);
 		} else if (Cheese.class.isAssignableFrom(e.getClass())) {
-			// System.out.println("Adding cheese");
 			elements.add(e);
 			cheeses.add((Cheese) e);
 		} else if (Service.class.isAssignableFrom(e.getClass())) {
-			// System.out.println("Adding service");
 			elements.add(e);
 			services.add((Service) e);
 		} else {
@@ -66,6 +62,8 @@ public class PartyTrayOrder<T extends Product> extends GenericOrder<T> {
 	}
 
 	/**
+	 * TODO REMOVE TESTING
+	 * 
 	 * @param args
 	 */
 	public static void main(String[] args) {

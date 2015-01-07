@@ -14,7 +14,8 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * ProductGenerator (description of class)
+ * ProductGenerator is used to faciliate the generation of random objects and
+ * their subclasses into collections for testing purposes.
  * <p>
  * (description of core fields)
  * <p>
@@ -27,7 +28,7 @@ import java.util.List;
 public class ProductGenerator {
 
 	/**
-	 * 
+	 * A list collection containing all relevant product types for generation
 	 */
 	public static final List<Class<? extends Product>> allTypes = Collections.unmodifiableList(Arrays.asList(
 			Product.class, ComputerPart.class, Motherboard.class, RAM.class, Drive.class, Peripheral.class,
@@ -35,8 +36,11 @@ public class ProductGenerator {
 			Cheddar.class, Mozzarella.class, Fruit.class, Apple.class, Orange.class));
 
 	/**
+	 * Method to return subtypes of base class
+	 * 
 	 * @param type
-	 * @return
+	 *            of objects to be return for class type
+	 * @return a List containing the random objects type options
 	 */
 	private static <T> List<Class<? extends Product>> getSubtypes(Class<T> classType) {
 		System.out.println("Class type:" + classType);
@@ -50,20 +54,16 @@ public class ProductGenerator {
 	}
 
 	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		System.out.println("Computer Order = " + Arrays.deepToString(createComputerOrder(10).toArray()));
-		System.out.println("Party Order = " + Arrays.deepToString(createPartyOrder(10).toArray()));
-		System.out.println("Computer Party Order = " + Arrays.deepToString(createComputerPartyOrder(10).toArray()));
-	}
-
-	/**
+	 * Creates an ArrayList of type Product for given size and containing
+	 * selected base classes
+	 * 
 	 * @param size
+	 *            the size of the collection to be returned
 	 * @param baseClasses
-	 * @return
+	 *            the base class for random generation of subclasses
+	 * @return an ArrayList of base class subclasses objects
 	 */
-	@SuppressWarnings({ "unchecked", "static-access" })
+	@SuppressWarnings({ "unchecked" })
 	public static ArrayList<Product> createOrder(int size, Class... baseClasses) {
 		int randomItemNum;
 		ArrayList<Product> list = new ArrayList<>();
@@ -79,8 +79,12 @@ public class ProductGenerator {
 	}
 
 	/**
+	 * Based on given class type, method to add item to list
+	 * 
 	 * @param productClass
+	 *            Class of given type
 	 * @param list
+	 *            containing possible Product types
 	 */
 	private static void addClassType(Class productClass, ArrayList<Product> list) {
 		if (productClass == Motherboard.class) {
@@ -109,26 +113,46 @@ public class ProductGenerator {
 	}
 
 	/**
+	 * Method to create a random ComputerOrder
+	 * 
 	 * @param size
-	 * @return
+	 *            of the ComputerOrder
+	 * @return the generated random collection of given size
 	 */
 	public static ArrayList<Product> createComputerOrder(int size) {
 		return createOrder(size, ComputerPart.class, Peripheral.class, Service.class);
 	}
 
 	/**
+	 * Method to create a random PartyOrder
+	 * 
 	 * @param size
-	 * @return
+	 *            of the PartyOrder
+	 * @return the generated random collection of given size
 	 */
 	public static ArrayList<Product> createPartyOrder(int size) {
 		return createOrder(size, Fruit.class, Cheese.class, Service.class);
 	}
 
 	/**
+	 * Method to create a random ComputerPartyOrder
+	 * 
 	 * @param size
-	 * @return
+	 *            of the ComputerPartyOrder
+	 * @return the generated random collection of given size
 	 */
 	public static ArrayList<Product> createComputerPartyOrder(int size) {
 		return createOrder(size, ComputerPart.class, Peripheral.class, Service.class, Fruit.class, Cheese.class);
+	}
+
+	/**
+	 * TODO TESTING TO BE REMOVED
+	 * 
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		System.out.println("Computer Order = " + Arrays.deepToString(createComputerOrder(10).toArray()));
+		System.out.println("Party Order = " + Arrays.deepToString(createPartyOrder(10).toArray()));
+		System.out.println("Computer Party Order = " + Arrays.deepToString(createComputerPartyOrder(10).toArray()));
 	}
 }

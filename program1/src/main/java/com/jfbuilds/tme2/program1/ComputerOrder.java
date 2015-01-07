@@ -1,5 +1,5 @@
 /**
- * File Name: ComputerPartsOrder.java<br>
+ * File Name: ComputerOrder.java<br>
  * Jean-francois Nepton<br>
  * COMP 308 Java for Programmers<br>
  * Cordinator: Dr. Xiaokun Zhang<br>
@@ -11,15 +11,17 @@ package com.jfbuilds.tme2.program1;
 import java.util.ArrayList;
 
 /**
- * ComputerPartsOrder (description of class)
+ * A container that acts as a collection of an arbitrary number of objects of
+ * type ComputerPart, Peripheral, or Service or subclasses.
  * <p>
- * (description of core fields)
+ * Field id gives each item in the collection a unique number.
  * <p>
- * (description of core methods)
+ * Methods exist for common actions for a collection as well as an override of
+ * the toString method to offer a readable representation of the item in the
+ * collection.
  * 
  * @author Jean-francois Nepton
  * @version %I%, %G%
- * @param <T>
  * @since 1.0
  */
 public class ComputerOrder<T extends Product> extends GenericOrder<T> {
@@ -30,29 +32,26 @@ public class ComputerOrder<T extends Product> extends GenericOrder<T> {
 
 	ArrayList<Service> services;
 
-	/**
-	 * 
-	 */
 	public ComputerOrder() {
 		elements = new ArrayList<>();
 		computerParts = new ArrayList<>();
 		peripherals = new ArrayList<>();
 		services = new ArrayList<>();
-		id = "Com-Ord" + count;
+		id = "Com-Ord-" + count;
 	}
 
+	/**
+	 * @see com.jfbuilds.tme2.program1.GenericOrder#add(com.jfbuilds.tme2.program1.Product)
+	 */
 	@Override
 	public boolean add(T e) {
 		if (ComputerPart.class.isAssignableFrom(e.getClass())) {
-			// System.out.println("Adding comp part: " + e.getClass());
 			elements.add(e);
 			computerParts.add((ComputerPart) e);
 		} else if (Peripheral.class.isAssignableFrom(e.getClass())) {
-			// System.out.println("Adding peripheral: " + e.getClass());
 			elements.add(e);
 			peripherals.add((Peripheral) e);
 		} else if (Service.class.isAssignableFrom(e.getClass())) {
-			// System.out.println("Adding service: " + e.getClass());
 			elements.add(e);
 			services.add((Service) e);
 		} else {
@@ -62,6 +61,11 @@ public class ComputerOrder<T extends Product> extends GenericOrder<T> {
 		return true;
 	}
 
+	/**
+	 * TESTING TO BE REMOVED
+	 * 
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		ComputerOrder<Product> compParts = new ComputerOrder<>();
 		compParts.add(new Motherboard());

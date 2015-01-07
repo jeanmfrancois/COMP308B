@@ -9,11 +9,10 @@
 package com.jfbuilds.tme2.program1;
 
 /**
- * TestOrderProcessor (description of class)
- * <p>
- * (description of core fields)
- * <p>
- * (description of core methods)
+ * TestOrderProcessor is used to test the creation of an empty GenericOrder, add
+ * 50 elements of type ComputerOrder, which are generated from a generator
+ * ProductGenerator, process the order with OrderProcessor to be accepted,
+ * processed and dispatched within a sorted manner.
  * 
  * @author Jean-francois Nepton
  * @version %I%, %G%
@@ -21,9 +20,6 @@ package com.jfbuilds.tme2.program1;
  */
 public class TestOrderProcessor {
 
-	/**
-	 * @param args
-	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		GenericOrder<Product> genOrd = new GenericOrder<>();
@@ -37,8 +33,8 @@ public class TestOrderProcessor {
 		ordPro.process();
 		ordPro.dispatchComputerParts();
 		ordPro.dispatchPeripherals();
-		ordPro.dispatchFruits();
-		ordPro.dispatchCheeses();
+		// //ordPro.dispatchFruits();
+		// //ordPro.dispatchCheeses();
 		ordPro.dispatchServices();
 	}
 }

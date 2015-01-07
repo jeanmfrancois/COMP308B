@@ -28,21 +28,12 @@ import java.util.ArrayList;
  */
 public class GenericOrder<T extends Product> extends AbstractList<T> {
 
-	/**
-	 * 
-	 */
 	public String id;
 
 	protected ArrayList<T> elements;
 
-	/**
-	 * 
-	 */
 	public static int count = 0;
 
-	/**
-	 * 
-	 */
 	public GenericOrder() {
 		elements = new ArrayList<>();
 		count += 1;
@@ -50,12 +41,12 @@ public class GenericOrder<T extends Product> extends AbstractList<T> {
 	}
 
 	/**
-	 * 
+	 * Create a GenericOrder from an ArrayList of supplied Product type
 	 */
 	public GenericOrder(ArrayList<T> suppliedProducts) {
 		elements = suppliedProducts;
 		count += 1;
-		id = "Gen-Ord" + count;
+		id = "Gen-Ord-" + count;
 	}
 
 	/**
@@ -97,7 +88,8 @@ public class GenericOrder<T extends Product> extends AbstractList<T> {
 
 	/**
 	 * @param e
-	 * @return
+	 *            elements to add all from another GenericOrder of same type
+	 * @return whether the operation was successful
 	 */
 	public boolean addAll(GenericOrder<T> e) {
 		elements.addAll(e);
@@ -105,6 +97,8 @@ public class GenericOrder<T extends Product> extends AbstractList<T> {
 	}
 
 	/**
+	 * TESTING CODE TO BE REMOVED...
+	 * 
 	 * @param args
 	 */
 	public static void main(String[] args) {
