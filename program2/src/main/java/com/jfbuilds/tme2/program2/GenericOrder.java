@@ -7,7 +7,7 @@
  * Assignment: TME 2<br>
  * Created: Sep 30, 2014
  */
-package com.jfbuilds.tme2.program1;
+package com.jfbuilds.tme2.program2;
 
 import java.util.AbstractList;
 import java.util.ArrayList;
@@ -32,7 +32,7 @@ public class GenericOrder<T extends Product> extends AbstractList<T> {
 
 	protected ArrayList<T> elements;
 
-	public static int idNum = (int) (Math.random() * 5000d);;
+	public static int idNum = (int) (Math.random() * 5000);
 
 	public GenericOrder() {
 		elements = new ArrayList<>();
@@ -94,5 +94,16 @@ public class GenericOrder<T extends Product> extends AbstractList<T> {
 	public boolean addAll(GenericOrder<T> e) {
 		elements.addAll(e);
 		return true;
+	}
+
+	/**
+	 * TESTING CODE TO BE REMOVED...
+	 * 
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		GenericOrder<Product> products = new GenericOrder<Product>(ProductGenerator.createComputerPartyOrder(50));
+		System.out.println("Print items:");
+		System.out.println(products);
 	}
 }

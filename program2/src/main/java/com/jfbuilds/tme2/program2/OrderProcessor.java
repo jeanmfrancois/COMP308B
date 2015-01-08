@@ -6,7 +6,7 @@
  * Student ID# 2358976<br>
  * Created: Oct 15, 2014
  */
-package com.jfbuilds.tme2.program1;
+package com.jfbuilds.tme2.program2;
 
 /**
  * OrderProcessor is used to process an Order of type GenericOrder or it's
@@ -146,5 +146,27 @@ public class OrderProcessor<T extends Product> {
 			System.out.print("SERVICES: ");
 			System.out.println(services);
 		}
+	}
+
+	/**
+	 * TODO TESTING CODE TO BE REMOVED
+	 * 
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		// CREATE
+		GenericOrder<Product> testCollection = new GenericOrder<>(ProductGenerator.createComputerPartyOrder(10));
+		OrderProcessor<Product> processor = new OrderProcessor<>();
+		// ACCEPT
+		processor.accept(testCollection);
+		// PROCESS
+		processor.process();
+		// DISPATCH
+		System.out.println();
+		processor.dispatchComputerParts();
+		processor.dispatchPeripherals();
+		processor.dispatchCheeses();
+		processor.dispatchFruits();
+		processor.dispatchServices();
 	}
 }

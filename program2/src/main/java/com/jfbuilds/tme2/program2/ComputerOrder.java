@@ -6,7 +6,7 @@
  * Student ID# 2358976<br>
  * Created: Oct 15, 2014
  */
-package com.jfbuilds.tme2.program1;
+package com.jfbuilds.tme2.program2;
 
 import java.util.ArrayList;
 
@@ -59,5 +59,27 @@ public class ComputerOrder<T extends Product> extends GenericOrder<T> {
 					+ ", was not added due to not meeting container requirements of ComputerPartsOrder");
 		}
 		return true;
+	}
+
+	/**
+	 * TESTING TO BE REMOVED
+	 * 
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		ComputerOrder<Product> compParts = new ComputerOrder<>();
+		compParts.add(new Motherboard());
+		compParts.add(new Printer());
+		compParts.add(new AssemblyService());
+		compParts.add(new RAM());
+		compParts.add(new Monitor());
+		compParts.add(new DeliveryService());
+		compParts.add(new Drive());
+		compParts.add(new Apple());
+		compParts.add(new Peripheral());
+		System.out.println(compParts + "\n\n");
+		System.out.println(compParts.computerParts + "\n");
+		System.out.println(compParts.peripherals + "\n");
+		System.out.println(compParts.services + "\n");
 	}
 }

@@ -1,4 +1,4 @@
-package com.jfbuilds.tme2.program1;
+package com.jfbuilds.tme2.program2;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -18,7 +18,7 @@ class Product {
 
 	final static String[] OMITTED_FIELDS = { "rootClass", "idNum" };
 
-	protected static int idNum = (int) (Math.random() * 10000d);
+	protected static int idNum = (int) (Math.random() * 5000);
 
 	protected float price;
 

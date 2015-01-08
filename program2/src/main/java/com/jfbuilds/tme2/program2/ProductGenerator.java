@@ -6,7 +6,7 @@
  * Student ID# 2358976<br>
  * Created: Oct 22, 2014
  */
-package com.jfbuilds.tme2.program1;
+package com.jfbuilds.tme2.program2;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -142,5 +142,16 @@ public class ProductGenerator {
 	 */
 	public static ArrayList<Product> createComputerPartyOrder(int size) {
 		return createOrder(size, ComputerPart.class, Peripheral.class, Service.class, Fruit.class, Cheese.class);
+	}
+
+	/**
+	 * TODO TESTING TO BE REMOVED
+	 * 
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		System.out.println("Computer Order = " + Arrays.deepToString(createComputerOrder(10).toArray()));
+		System.out.println("Party Order = " + Arrays.deepToString(createPartyOrder(10).toArray()));
+		System.out.println("Computer Party Order = " + Arrays.deepToString(createComputerPartyOrder(10).toArray()));
 	}
 }

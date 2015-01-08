@@ -6,7 +6,7 @@
  * Student ID# 2358976<br>
  * Created: Oct 15, 2014
  */
-package com.jfbuilds.tme2.program1;
+package com.jfbuilds.tme2.program2;
 
 import java.util.ArrayList;
 
@@ -59,5 +59,27 @@ public class PartyTrayOrder<T extends Product> extends GenericOrder<T> {
 					+ ", was not added due to not meeting container requirements of PartyTrayOrder");
 		}
 		return true;
+	}
+
+	/**
+	 * TODO REMOVE TESTING
+	 * 
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		PartyTrayOrder<Product> partyTray = new PartyTrayOrder<>();
+		partyTray.add(new Mozzarella());
+		partyTray.add(new Orange());
+		partyTray.add(new Apple());
+		partyTray.add(new AssemblyService());
+		partyTray.add(new Cheddar());
+		partyTray.add(new DeliveryService());
+		partyTray.add(new Drive());
+		partyTray.add(new Apple());
+		partyTray.add(new ComputerPart());
+		System.out.println(partyTray + "\n\n");
+		System.out.println(partyTray.fruits + "\n");
+		System.out.println(partyTray.cheeses + "\n");
+		System.out.println(partyTray.services + "\n");
 	}
 }
